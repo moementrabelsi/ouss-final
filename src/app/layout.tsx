@@ -115,6 +115,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <style>{`[data-reveal],[data-word],[data-line]{opacity:1!important;transform:none!important}`}</style>
         </noscript>
         <script
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html:
+              'setTimeout(function(){var d=document.documentElement;if(d.dataset.motion!=="ready"){d.dataset.motion="failed"}},2500)',
+          }}
+        />
+        <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}

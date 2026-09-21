@@ -1,9 +1,29 @@
 /**
  * Single source of truth for identity + contact details.
  *
- * TODO — replace the three placeholders below with the real values.
+ * TODO — replace the three contact placeholders below with the real values.
  * Nothing else in the codebase hardcodes them.
  */
+
+/**
+ * Canonical origin, resolved in this order:
+ *   1. NEXT_PUBLIC_SITE_URL   — set this once you have a custom domain
+ *   2. VERCEL_PROJECT_PRODUCTION_URL — injected automatically by Vercel
+ *   3. localhost              — local development
+ *
+ * This means the first deploy produces correct canonical/OG/sitemap URLs
+ * with no code change at all.
+ */
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit) return explicit.replace(/\/$/, "");
+
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (vercel) return `https://${vercel}`;
+
+  return "http://localhost:3000";
+}
+
 export const site = {
   name: "Oussema Lammouchi",
   shortName: "Oussema Lammouchi",
@@ -11,8 +31,8 @@ export const site = {
   city: "Aachen",
   university: "FH Aachen",
 
-  /** TODO: replace with the deployed domain (used for canonical URL, OG, sitemap). */
-  url: "https://oussema-lammouchi.vercel.app",
+  /** Resolved from the environment — see resolveSiteUrl above. */
+  url: resolveSiteUrl(),
 
   /** TODO: replace with the real address. */
   email: "oussema.lammouchi@example.com",

@@ -8,6 +8,10 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(useGSAP, ScrollTrigger);
   ScrollTrigger.config({ ignoreMobileResize: true });
   gsap.defaults({ ease: "power3.out" });
+  /* Tells the failsafe in layout.tsx that motion is alive. Without this,
+     any failure to load GSAP would leave every [data-reveal] element at
+     opacity 0 — an invisible page. */
+  document.documentElement.dataset.motion = "ready";
 }
 
 export { gsap, ScrollTrigger, useGSAP };

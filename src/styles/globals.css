@@ -349,6 +349,11 @@
     will-change: transform;
   }
 
+  /* Words marked `safe` never start hidden — see SplitWords. */
+  [data-word-safe] {
+    transform: none;
+  }
+
   /* ---------- Misc ---------- */
   .no-scrollbar {
     scrollbar-width: none;
@@ -380,6 +385,15 @@
   [data-draw] {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
+  }
+
+  /* Failsafe: if GSAP never came up, show everything rather than leaving
+     the visitor on a blank page. Set by the script in layout.tsx. */
+  html[data-motion="failed"] [data-reveal],
+  html[data-motion="failed"] [data-word],
+  html[data-motion="failed"] [data-line] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   @media (prefers-reduced-motion: reduce) {

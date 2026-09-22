@@ -35,11 +35,11 @@ export const site = {
   url: resolveSiteUrl(),
 
   /** TODO: replace with the real address. */
-  email: "oussema.lammouchi@example.com",
+  email: "Oussemalammouchi358@gmail.com",
   /** TODO: replace with the real profile URL. */
-  linkedin: "https://www.linkedin.com/in/example",
+  linkedin: "https://www.linkedin.com/in/oussema-lammouchi-242245387/",
   /** TODO: replace with the real profile URL. */
-  github: "https://github.com/example",
+  github: "https://github.com/OussemaLam",
 } as const;
 
 export const navItems = [

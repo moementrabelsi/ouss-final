@@ -61,7 +61,8 @@ export function Hero() {
         const tl = gsap.timeline({ delay: 0.1 });
 
         if (words.length) {
-          tl.from(words, { yPercent: 115, duration: 1.1, ease: "expo.out", stagger: 0.06 }, 0);
+          /* `y: 0` guards against a stray pixel offset on the mask — see useSectionReveal. */
+          tl.from(words, { yPercent: 115, y: 0, duration: 1.1, ease: "expo.out", stagger: 0.06 }, 0);
         }
         if (items.length) {
           tl.from(

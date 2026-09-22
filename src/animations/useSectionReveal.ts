@@ -2,6 +2,7 @@
 
 import { useRef, type RefObject } from "react";
 import { gsap, useGSAP, ScrollTrigger, motion, MOTION_OK } from "@/lib/gsap";
+import { markShown } from "@/lib/reveal";
 
 /**
  * One shared entrance choreography for every section.
@@ -45,16 +46,36 @@ export function useSectionReveal<T extends HTMLElement = HTMLElement>(
             tl.fromTo(
               lines,
               { scaleX: 0 },
-              { scaleX: 1, duration: motion.slow, ease: motion.easeInOut, stagger: 0.05 },
+              {
+                scaleX: 1,
+                duration: motion.slow,
+                ease: motion.easeInOut,
+                stagger: 0.05,
+                onComplete: () => markShown(lines),
+              },
               0,
             );
           }
 
           if (words.length) {
+            /* `y: 0` is not decoration. The CSS start state is
+               `transform: translate3d(0, 110%, 0)`, and GSAP reads that
+               existing matrix as a *pixel* y offset. Animating `yPercent`
+               alone left that pixel offset in place, so every headline
+               finished its tween exactly where it started — inside the
+               overflow mask, invisible. Pinning `y` to 0 on both ends
+               clears it. */
             tl.fromTo(
               words,
-              { yPercent: 110 },
-              { yPercent: 0, duration: 1, ease: motion.easeExpo, stagger: 0.035 },
+              { yPercent: 110, y: 0 },
+              {
+                yPercent: 0,
+                y: 0,
+                duration: 1,
+                ease: motion.easeExpo,
+                stagger: 0.035,
+                onComplete: () => markShown(words),
+              },
               0,
             );
           }
@@ -75,6 +96,7 @@ export function useSectionReveal<T extends HTMLElement = HTMLElement>(
                   ease: motion.ease,
                   stagger,
                   overwrite: true,
+                  onComplete: () => markShown(batch),
                 },
               ),
           });

@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { LanguageProvider } from "@/lib/i18n";
 import { site } from "@/data/site";
 import { translations } from "@/data/translations";
+import { RevealGuard } from "@/components/ui/RevealGuard";
 
 /* The fonts were declared but never loaded, so both the display and the body
    face fell back to the system UI font. Loading them properly is half of the
@@ -109,10 +110,17 @@ const personSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    /* suppressHydrationWarning: `lang` and `data-motion` are both written on
+       the client before React hydrates, which React would otherwise report as
+       a mismatched attribute on every load. */
+    <html
+      lang="de"
+      suppressHydrationWarning
+      className={`${inter.variable} ${spaceGrotesk.variable}`}
+    >
       <body>
         <noscript>
-          <style>{`[data-reveal],[data-word],[data-line]{opacity:1!important;transform:none!important}`}</style>
+          <style>{`[data-reveal],[data-word],[data-line]{opacity:1!important;transform:none!important}[data-draw]{stroke-dashoffset:0!important}`}</style>
         </noscript>
         <script
           // eslint-disable-next-line react/no-danger
@@ -126,6 +134,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
+        <RevealGuard />
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>

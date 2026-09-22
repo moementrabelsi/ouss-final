@@ -387,13 +387,27 @@
     stroke-dashoffset: 1;
   }
 
-  /* Failsafe: if GSAP never came up, show everything rather than leaving
-     the visitor on a blank page. Set by the script in layout.tsx. */
+  /* Failsafe 1 — GSAP never came up at all. Set by the script in layout.tsx. */
   html[data-motion="failed"] [data-reveal],
   html[data-motion="failed"] [data-word],
   html[data-motion="failed"] [data-line] {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  html[data-motion="failed"] [data-draw] {
+    stroke-dashoffset: 0 !important;
+  }
+
+  /* Failsafe 2 — GSAP came up but a reveal did not finish: a ScrollTrigger
+     that never fired, a tween that ended on the wrong value, an error in one
+     section. The watchdog in `@/lib/reveal` marks such elements `data-shown`
+     and this rule forces them visible. `!important` is deliberate: it has to
+     win against the inline styles GSAP leaves behind. */
+  [data-shown] {
+    opacity: 1 !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
   }
 
   @media (prefers-reduced-motion: reduce) {
